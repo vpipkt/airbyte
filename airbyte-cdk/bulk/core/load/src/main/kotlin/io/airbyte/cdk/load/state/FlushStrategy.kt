@@ -49,6 +49,7 @@ class DefaultFlushStrategy(
         }
 
         // Listen to the event stream for a new force flush index
+        // where's the guarantee that this event is for this stream?
         val nextFlushIndex = eventQueue.poll()?.indexes?.get(stream.descriptor)
 
         // Always update the index if the new one is not null

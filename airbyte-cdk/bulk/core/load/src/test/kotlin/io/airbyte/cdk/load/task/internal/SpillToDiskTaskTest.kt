@@ -14,7 +14,7 @@ import io.airbyte.cdk.load.message.MessageQueueSupplier
 import io.airbyte.cdk.load.message.StreamRecordCompleteWrapped
 import io.airbyte.cdk.load.message.StreamRecordWrapped
 import io.airbyte.cdk.load.state.FlushStrategy
-import io.airbyte.cdk.load.state.MemoryManager
+import io.airbyte.cdk.load.state.ReservationManager
 import io.airbyte.cdk.load.state.Reserved
 import io.airbyte.cdk.load.task.MockTaskLauncher
 import io.airbyte.cdk.load.util.lineSequence
@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test
         ]
 )
 class SpillToDiskTaskTest {
-    @Inject lateinit var memoryManager: MemoryManager
+    @Inject lateinit var memoryManager: ReservationManager
     @Inject lateinit var spillToDiskTaskFactory: DefaultSpillToDiskTaskFactory
     @Inject
     lateinit var queueSupplier:
@@ -67,7 +67,7 @@ class SpillToDiskTaskTest {
             val index = recordsWritten++
             bytesReserved++
             queue.publish(
-                memoryManager.reserveBlocking(
+                memoryManager.reserveFor(
                     1L,
                     StreamRecordWrapped(
                         index = index,
@@ -85,7 +85,7 @@ class SpillToDiskTaskTest {
             )
         }
         queue.publish(
-            memoryManager.reserveBlocking(0L, StreamRecordCompleteWrapped(index = maxRecords))
+            memoryManager.reserveFor(0L, StreamRecordCompleteWrapped(index = maxRecords))
         )
         return bytesReserved
     }

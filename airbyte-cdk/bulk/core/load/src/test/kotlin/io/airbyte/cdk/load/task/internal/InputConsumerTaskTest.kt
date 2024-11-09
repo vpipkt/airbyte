@@ -30,7 +30,7 @@ import io.airbyte.cdk.load.message.StreamFileCompleteWrapped
 import io.airbyte.cdk.load.message.StreamFileWrapped
 import io.airbyte.cdk.load.message.StreamRecordCompleteWrapped
 import io.airbyte.cdk.load.message.StreamRecordWrapped
-import io.airbyte.cdk.load.state.MemoryManager
+import io.airbyte.cdk.load.state.ReservationManager
 import io.airbyte.cdk.load.state.Reserved
 import io.airbyte.cdk.load.state.SyncManager
 import io.airbyte.cdk.load.test.util.CoroutineTestUtils
@@ -74,8 +74,8 @@ class InputConsumerTaskTest {
     @Singleton
     @Primary
     @Requires(env = ["InputConsumerTaskTest"])
-    class MockInputFlow(val memoryManager: MemoryManager) :
-        SizedInputFlow<Reserved<DestinationMessage>> {
+    class MockInputFlow : SizedInputFlow<Reserved<DestinationMessage>> {
+        val memoryManager = ReservationManager(100L)
         private val messages = Channel<Pair<Long, Reserved<DestinationMessage>>>(Channel.UNLIMITED)
         val initialMemory = memoryManager.remainingMemoryBytes
 
@@ -88,7 +88,7 @@ class InputConsumerTaskTest {
         }
 
         suspend fun addMessage(message: DestinationMessage, size: Long = 0L) {
-            messages.send(Pair(size, memoryManager.reserveBlocking(1, message)))
+            messages.send(Pair(size, memoryManager.reserveFor(1, message)))
         }
 
         fun stop() {

@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 public class PostgresCdcProperties {
 
-  private static final Duration HEARTBEAT_INTERVAL = Duration.ofSeconds(600L);
+  private static final Duration HEARTBEAT_INTERVAL = Duration.ofSeconds(10L);
 
   // Test execution latency is lower when heartbeats are more frequent.
   private static final Duration HEARTBEAT_INTERVAL_IN_TESTS = Duration.ofSeconds(1L);
@@ -61,6 +61,7 @@ public class PostgresCdcProperties {
     props.setProperty("converters", "datetime");
     props.setProperty("datetime.type", PostgresConverter.class.getName());
     props.setProperty("include.unknown.datatypes", "true");
+    props.setProperty("read.only", "true");
 
     final Duration heartbeatInterval =
         (database.getSourceConfig().has("is_test") && database.getSourceConfig().get("is_test").asBoolean())

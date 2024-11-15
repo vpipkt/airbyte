@@ -109,6 +109,7 @@ public class PostgresDebeziumStateUtil implements DebeziumStateUtil {
                                           final String slotName,
                                           final String publicationName,
                                           final String plugin) {
+
     if (Objects.isNull(savedOffset) || savedOffset.isEmpty()) {
       return;
     }
@@ -116,6 +117,7 @@ public class PostgresDebeziumStateUtil implements DebeziumStateUtil {
     final LogSequenceNumber logSequenceNumber = LogSequenceNumber.valueOf(savedOffset.getAsLong());
 
     LOGGER.info("Committing upto LSN: {}", savedOffset.getAsLong());
+
     try (final BaseConnection pgConnection = (BaseConnection) PostgresReplicationConnection.createConnection(jdbcConfig)) {
       ChainedLogicalStreamBuilder streamBuilder = pgConnection
           .getReplicationAPI()
@@ -127,16 +129,17 @@ public class PostgresDebeziumStateUtil implements DebeziumStateUtil {
       streamBuilder = addSlotOption(publicationName, plugin, pgConnection, streamBuilder);
 
       try (final PGReplicationStream stream = streamBuilder.start()) {
-        stream.forceUpdateStatus();
+        //stream.forceUpdateStatus();
 
         stream.setFlushedLSN(logSequenceNumber);
         stream.setAppliedLSN(logSequenceNumber);
-
         stream.forceUpdateStatus();
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+
+
   }
 
   private ChainedLogicalStreamBuilder addSlotOption(final String publicationName,

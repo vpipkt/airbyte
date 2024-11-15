@@ -47,6 +47,7 @@ public class PostgresCdcProperties {
     props.setProperty("publication.name", sourceConfig.get("replication_method").get("publication").asText());
 
     props.setProperty("publication.autocreate.mode", "disabled");
+    props.setProperty("read.only", "true");
 
     return props;
   }
@@ -61,7 +62,7 @@ public class PostgresCdcProperties {
     props.setProperty("converters", "datetime");
     props.setProperty("datetime.type", PostgresConverter.class.getName());
     props.setProperty("include.unknown.datatypes", "true");
-    props.setProperty("read.only", "true");
+
 
     final Duration heartbeatInterval =
         (database.getSourceConfig().has("is_test") && database.getSourceConfig().get("is_test").asBoolean())

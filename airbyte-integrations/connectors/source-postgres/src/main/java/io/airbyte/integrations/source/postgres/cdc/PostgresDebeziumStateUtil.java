@@ -131,9 +131,9 @@ public class PostgresDebeziumStateUtil implements DebeziumStateUtil {
       try (final PGReplicationStream stream = streamBuilder.start()) {
         //stream.forceUpdateStatus();
 
-        stream.setFlushedLSN(logSequenceNumber);
-        stream.setAppliedLSN(logSequenceNumber);
-        stream.forceUpdateStatus();
+        //stream.setFlushedLSN(logSequenceNumber);
+        //stream.setAppliedLSN(logSequenceNumber);
+        //stream.forceUpdateStatus();
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);

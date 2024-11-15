@@ -64,6 +64,19 @@ public class PostgresDebeziumStateUtil implements DebeziumStateUtil {
       return true;
     }
 
+    if (replicationSlot.has("restart_lsn")) {
+      final long restartLsn = Lsn.valueOf(replicationSlot.get("restart_lsn").asText()).asLong();
+      LOGGER.info("Replication slot restart_lsn : " + restartLsn + " Saved offset LSN : " + savedOffset.getAsLong());
+      final long confirmedFlushLsnOnServerSide = Lsn.valueOf(replicationSlot.get("confirmed_flush_lsn").asText()).asLong();
+      LOGGER.info("Replication slot confirmed_flush_lsn : " + confirmedFlushLsnOnServerSide + " Saved offset LSN : " + savedOffset.getAsLong());
+      return savedOffset.getAsLong() >= restartLsn;
+    } else  if (replicationSlot.has("confirmed_flush_lsn")) {
+        final long confirmedFlushLsnOnServerSide = Lsn.valueOf(replicationSlot.get("confirmed_flush_lsn").asText()).asLong();
+        LOGGER.info("Replication slot confirmed_flush_lsn : " + confirmedFlushLsnOnServerSide + " Saved offset LSN : " + savedOffset.getAsLong());
+        return savedOffset.getAsLong() >= confirmedFlushLsnOnServerSide;
+    }
+
+    /*
     if (replicationSlot.has("confirmed_flush_lsn")) {
       final long confirmedFlushLsnOnServerSide = Lsn.valueOf(replicationSlot.get("confirmed_flush_lsn").asText()).asLong();
       LOGGER.info("Replication slot confirmed_flush_lsn : " + confirmedFlushLsnOnServerSide + " Saved offset LSN : " + savedOffset.getAsLong());
@@ -73,6 +86,7 @@ public class PostgresDebeziumStateUtil implements DebeziumStateUtil {
       LOGGER.info("Replication slot restart_lsn : " + restartLsn + " Saved offset LSN : " + savedOffset.getAsLong());
       return savedOffset.getAsLong() >= restartLsn;
     }
+    */
 
     // We return true when saved offset is not present cause using an empty offset would result in sync
     // from scratch anyway

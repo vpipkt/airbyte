@@ -219,9 +219,11 @@ public class PostgresDebeziumStateUtil implements DebeziumStateUtil {
 
     final Map<String, ?> offset = previousOffset.getOffset();
 
-    if (offset.containsKey(LAST_COMMIT_LSN_KEY)) {
-      return OptionalLong.of((long) offset.get(LAST_COMMIT_LSN_KEY));
-    } else if (offset.containsKey(LSN_KEY)) {
+    //if (offset.containsKey(LAST_COMMIT_LSN_KEY)) {
+    //  return OptionalLong.of((long) offset.get(LAST_COMMIT_LSN_KEY));
+    //} else
+
+    if (offset.containsKey(LSN_KEY)) {
       return OptionalLong.of((long) offset.get(LSN_KEY));
     } else if (loader.getRawOffset().containsKey(LSN_KEY)) {
       return OptionalLong.of(Long.parseLong(loader.getRawOffset().get(LSN_KEY).toString()));

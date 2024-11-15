@@ -1575,8 +1575,11 @@ abstract class BasicFunctionalityIntegrationTest(
                           "struct": {"foo": 50000.0000000000000001},
                           "number": 50000.0000000000000001,
                           "integer": 99999999999999999999999999999999
+<<<<<<< HEAD
                           "struct": {"foo": 67.174118},
                           "number": 67.174118
+=======
+>>>>>>> a3d9823f02 (improve float/int handling)
                         }
                     """.trimIndent(),
                 ),
@@ -1603,7 +1606,10 @@ abstract class BasicFunctionalityIntegrationTest(
         val nestedFloat: BigDecimal
         val topLevelFloat: BigDecimal
         val bigInt: BigInteger?
+<<<<<<< HEAD
         val bigIntChanges: List<Change>
+=======
+>>>>>>> a3d9823f02 (improve float/int handling)
         val badValuesData: Map<String, Any?>
         val badValuesChanges: MutableList<Change>
         when (allTypesBehavior) {
@@ -1619,6 +1625,7 @@ abstract class BasicFunctionalityIntegrationTest(
                         BigDecimal("50000.0")
                     } else {
                         BigDecimal("50000.0000000000000001")
+<<<<<<< HEAD
                     }
                 bigInt =
                     if (allTypesBehavior.integerCanBeLarge) {
@@ -1638,7 +1645,14 @@ abstract class BasicFunctionalityIntegrationTest(
                                     .DESTINATION_FIELD_SIZE_LIMITATION,
                             )
                         )
+=======
+>>>>>>> a3d9823f02 (improve float/int handling)
                     }
+                bigInt = if (allTypesBehavior.integerCanBeLarge) {
+                    BigInteger("99999999999999999999999999999999")
+                } else {
+                    null
+                }
                 badValuesData =
                     mapOf(
                         "id" to 5,
@@ -1681,7 +1695,10 @@ abstract class BasicFunctionalityIntegrationTest(
                 nestedFloat = BigDecimal("50000.0000000000000001")
                 topLevelFloat = BigDecimal("50000.0000000000000001")
                 bigInt = BigInteger("99999999999999999999999999999999")
+<<<<<<< HEAD
                 bigIntChanges = emptyList<Change>()
+=======
+>>>>>>> a3d9823f02 (improve float/int handling)
                 badValuesData =
                     mapOf(
                         "id" to 5,

@@ -69,7 +69,7 @@ public class PostgresCdcProperties {
             ? HEARTBEAT_INTERVAL_IN_TESTS
             : HEARTBEAT_INTERVAL;
     props.setProperty("heartbeat.interval.ms", Long.toString(heartbeatInterval.toMillis()));
-    props.setProperty("poll.interval.ms", Long.toString(heartbeatInterval.toMillis()));
+    //props.setProperty("poll.interval.ms", "1000");
 
     if (sourceConfig.get("replication_method").has("heartbeat_action_query")
         && !sourceConfig.get("replication_method").get("heartbeat_action_query").asText().isEmpty()) {

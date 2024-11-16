@@ -77,7 +77,7 @@ public class PostgresCdcProperties {
     }
 
     if (PostgresUtils.shouldFlushAfterSync(sourceConfig)) {
-      props.setProperty("flush.lsn.source", "false");
+      props.setProperty("flush.lsn.source", "true");
     }
 
     // Check params for SSL connection in config and add properties for CDC SSL connection

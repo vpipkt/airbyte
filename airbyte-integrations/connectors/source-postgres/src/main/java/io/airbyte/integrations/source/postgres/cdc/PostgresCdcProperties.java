@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 public class PostgresCdcProperties {
 
-  private static final Duration HEARTBEAT_INTERVAL = Duration.ofSeconds(10L);
+  private static final Duration HEARTBEAT_INTERVAL = Duration.ofSeconds(0L);
 
   // Test execution latency is lower when heartbeats are more frequent.
   private static final Duration HEARTBEAT_INTERVAL_IN_TESTS = Duration.ofSeconds(1L);

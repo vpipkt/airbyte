@@ -81,8 +81,9 @@ fun toAirbyteType(schema: Schema): AirbyteType {
                     .toSet()
             )
         Schema.Type.NULL ->
-            throw IllegalStateException("Null should only appear in union types, and should have been handled in an earlier recursion. This is a bug.")
-        else ->
-            throw IllegalArgumentException("Unsupported Avro schema $schema")
+            throw IllegalStateException(
+                "Null should only appear in union types, and should have been handled in an earlier recursion. This is a bug."
+            )
+        else -> throw IllegalArgumentException("Unsupported Avro schema $schema")
     }
 }

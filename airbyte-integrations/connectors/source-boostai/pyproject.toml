@@ -1,0 +1,27 @@
+[build-system]
+requires = [ "poetry-core>=1.0.0",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+version = "0.1.0"
+name = "source-boostai"
+description = "Source implementation for boostai."
+authors = [ "Airbyte <contact@airbyte.io>",]
+license = "MIT"
+readme = "README.md"
+documentation = "https://docs.airbyte.com/integrations/sources/boostai"
+homepage = "https://airbyte.com"
+repository = "https://github.com/airbytehq/airbyte"
+packages = [ { include = "source_boostai" }, {include = "main.py" } ]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+airbyte-cdk = "5.7.5"  # for airbyte 1.1.0
+
+[tool.poetry.scripts]
+source-boostai = "source_boostai.run:run"
+
+[tool.poetry.group.dev.dependencies]
+requests-mock = "*"
+pytest-mock = "*"
+pytest = "*"

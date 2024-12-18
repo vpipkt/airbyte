@@ -17,6 +17,7 @@ packages = [ { include = "source_boostai" }, {include = "main.py" } ]
 [tool.poetry.dependencies]
 python = "^3.10"
 airbyte-cdk = "5.7.5"  # for airbyte 1.1.0
+pycowsay = "0.0.0.2"
 
 [tool.poetry.scripts]
 source-boostai = "source_boostai.run:run"

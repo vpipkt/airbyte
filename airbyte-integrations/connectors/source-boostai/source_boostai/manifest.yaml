@@ -27,17 +27,19 @@ definitions:
               limit: "{{ config['limit'] }}"
               offset: "{{ next_page_token['next_page_token'] | default(0) }}"
             search:
-              to_date: "{{ stream_interval['end_time'] }}"
-                # {{
-                # format_datetime(now_utc().fromtimestamp(timestamp(stream_interval['start_time'])
-                # + 86400), '%Y-%m-%d') }}
-              # from_date: "{{ format_datetime(stream_interval['start_time'], '%Y-%m-%d') }}"
               from_date: "{{ stream_interval['start_time'] }}"
+              to_date: "{{ stream_interval['end_time'] }}"
         record_selector:
           type: RecordSelector
           extractor:
             type: DpathExtractor
-            field_path: []
+            field_path:  []
+              # - "*"
+              # - sessions
+              # - "*"
+              # - messages
+              # - "*"
+              # - content
       primary_key:
         - id
       schema_loader:
@@ -50,6 +52,23 @@ definitions:
             - path:
                 - cursor_path
               value: "{{ record.sessions[0].created }}"
+            - path:
+                - cow_says
+              value: "{{ record.environment | say }}"
+            - path:
+                - xs
+              value: "{{ record  | count }}" #", ['text', 'original_question']) }}"
+            - path:
+                - ys
+              value: "{{ say_dicts(record.sessions, ['text', 'original_question']) }}"
+              # value: "{{ record.id | say }}"
+              # value: "{{ record.id | say }}"
+      #           - sessions
+      #           - messages
+      #           - "*"
+      #           - cow_question 
+      #         value: "litersally"
+                # value: "{{ record.sessions[*].messages[*].content[*].text }}"
       incremental_sync:
         type: DatetimeBasedCursor
         step: P1D
@@ -358,6 +377,10 @@ schemas:
           - string
           - "null"
       id_subclaim:
+        type:
+          - string
+          - "null"
+      cow_says:
         type:
           - string
           - "null"

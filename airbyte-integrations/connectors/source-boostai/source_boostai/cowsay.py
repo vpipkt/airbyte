@@ -4,7 +4,6 @@ from typing import Union
 import logging
 
 def get_dict_texts(d: dict, keys: list[str]) -> list[str]:
-    logging.warning(d)
     result = []
     for k, v in d.items():
         if isinstance(v, str) and k in keys:

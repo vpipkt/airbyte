@@ -53,11 +53,8 @@ definitions:
                 - cursor_path
               value: "{{ record.sessions[0].created }}"
             - path:
-                - cow_says
-              value: "{{ record.environment | say }}"
-            - path:
                 - xs
-              value: "{{ record  | count }}" #", ['text', 'original_question']) }}"
+              value: "{{ record  | count }}"
             - path:
                 - ys
               value: "{{ say_dicts(record.sessions, ['text', 'original_question']) }}"
@@ -69,6 +66,24 @@ definitions:
       #           - cow_question 
       #         value: "litersally"
                 # value: "{{ record.sessions[*].messages[*].content[*].text }}"
+        - type: RemoveFields
+          field_pointers:
+            -
+              - sessions
+              - "*"
+              - messages
+              - "*"
+              - original_question
+        - type: RemoveFields
+          field_pointers:
+            -
+              - sessions
+              - "*"
+              - messages
+              - "*"
+              - content
+              - "*"
+              - text
       incremental_sync:
         type: DatetimeBasedCursor
         step: P1D

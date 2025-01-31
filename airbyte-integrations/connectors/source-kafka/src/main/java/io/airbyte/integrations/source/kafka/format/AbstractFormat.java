@@ -16,6 +16,7 @@ import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,6 +80,9 @@ public abstract class AbstractFormat implements KafkaFormat {
       case SASL_SSL, SASL_PLAINTEXT -> {
         builder.put(SaslConfigs.SASL_JAAS_CONFIG, protocolConfig.get("sasl_jaas_config").asText());
         builder.put(SaslConfigs.SASL_MECHANISM, protocolConfig.get("sasl_mechanism").asText());
+        // tnno specifics
+        builder.put(SaslConfigs.SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, "https://login.microsoftonline.com/e6017ef7-e18e-41f2-a27f-6a5b1f9f7e1a/oauth2/token");
+        builder.put(SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS, OAuthBearerLoginCallbackHandler.class.getName());
       }
       default -> throw new RuntimeException("Unexpected Kafka protocol: " + Jsons.serialize(protocol));
     }

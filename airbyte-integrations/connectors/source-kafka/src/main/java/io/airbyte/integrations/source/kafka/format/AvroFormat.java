@@ -60,13 +60,16 @@ public class AvroFormat extends AbstractFormat {
     final JsonNode avro_config = config.get("MessageFormat");
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class.getName());
-    props.put(SchemaRegistryClientConfig.BASIC_AUTH_CREDENTIALS_SOURCE, "USER_INFO");
+//    props.put(SchemaRegistryClientConfig.BASIC_AUTH_CREDENTIALS_SOURCE, "USER_INFO");
     // these are not really optional, as written
 //    props.put(SchemaRegistryClientConfig.USER_INFO_CONFIG,
 //        String.format("%s:%s", avro_config.get("schema_registry_username").asText(), avro_config.get("schema_registry_password").asText()));
     props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, avro_config.get("schema_registry_url").asText());
     props.put(KafkaAvroSerializerConfig.VALUE_SUBJECT_NAME_STRATEGY,
         KafkaStrategy.getStrategyName(avro_config.get("deserialization_strategy").asText()));
+    props.put(SchemaRegistryClientConfig.BEARER_AUTH_CREDENTIALS_SOURCE, "SASL_OAUTHBEARER_INHERIT");
+    props.put("bearer.auth.logical.cluster", "lsrc-m8wzjx");
+
     return props;
   }
 

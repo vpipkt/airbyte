@@ -59,7 +59,7 @@ public class AvroFormat extends AbstractFormat {
   protected Map<String, Object> getKafkaConfig() {
     Map<String, Object> props = super.getKafkaConfig();
     final JsonNode avro_config = config.get("MessageFormat");
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class.getName());
+    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class.getName());
 //    props.put(SchemaRegistryClientConfig.BASIC_AUTH_CREDENTIALS_SOURCE, "USER_INFO");
     // these are not really optional, as written

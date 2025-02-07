@@ -71,7 +71,8 @@ public class AvroFormat extends AbstractFormat {
               String.format("%s:%s", avro_config.get("schema_registry_username").asText(), avro_config.get("schema_registry_password").asText()));
     } else {
       // If the registry username is missing; and the sasl_mechanism == OAUTHBEARER
-      if(config.get(SaslConfigs.SASL_MECHANISM).asText().equals(OAuthBearerLoginModule.OAUTHBEARER_MECHANISM)) {
+      final JsonNode protocolConfig = config.get("protocol");
+      if(protocolConfig.get("sasl_mechanism").asText().equals(OAuthBearerLoginModule.OAUTHBEARER_MECHANISM)) {
         props.put(SchemaRegistryClientConfig.BEARER_AUTH_CREDENTIALS_SOURCE, "SASL_OAUTHBEARER_INHERIT");
 //    props.put("bearer.auth.logical.cluster", "lsrc-m8wzjx");
       }

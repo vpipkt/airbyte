@@ -14,7 +14,6 @@ import com.google.common.collect.Lists;
 import io.airbyte.commons.json.Jsons;
 import io.airbyte.commons.util.AutoCloseableIterator;
 import io.airbyte.commons.util.AutoCloseableIterators;
-import io.airbyte.integrations.source.kafka.KafkaProtocol;
 import io.airbyte.integrations.source.kafka.KafkaStrategy;
 import io.airbyte.protocol.models.Field;
 import io.airbyte.protocol.models.JsonSchemaType;
@@ -26,7 +25,6 @@ import io.airbyte.protocol.models.v0.SyncMode;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClientConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import java.time.Duration;
 import java.time.Instant;
@@ -42,7 +40,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
@@ -74,14 +71,11 @@ public class AvroFormat extends AbstractFormat {
       final JsonNode protocolConfig = config.get("protocol");
       if(protocolConfig.get("sasl_mechanism").asText().equals(OAuthBearerLoginModule.OAUTHBEARER_MECHANISM)) {
         props.put(SchemaRegistryClientConfig.BEARER_AUTH_CREDENTIALS_SOURCE, "SASL_OAUTHBEARER_INHERIT");
-//    props.put("bearer.auth.logical.cluster", "lsrc-m8wzjx");
       }
     }
-
     props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, avro_config.get("schema_registry_url").asText());
     props.put(KafkaAvroSerializerConfig.VALUE_SUBJECT_NAME_STRATEGY,
         KafkaStrategy.getStrategyName(avro_config.get("deserialization_strategy").asText()));
-
     return props;
   }
 

@@ -83,7 +83,6 @@ public abstract class AbstractFormat implements KafkaFormat {
         String saslMechanism = protocolConfig.get("sasl_mechanism").asText();
         builder.put(SaslConfigs.SASL_MECHANISM, saslMechanism);
         if (saslMechanism.equals(OAuthBearerLoginModule.OAUTHBEARER_MECHANISM)) {
-          // tnno specifics
           builder.put(SaslConfigs.SASL_OAUTHBEARER_TOKEN_ENDPOINT_URL, protocolConfig.get("oauthbearer_token_endpoint_url").asText());
           builder.put(SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS, OAuthBearerLoginCallbackHandler.class.getName());
         }

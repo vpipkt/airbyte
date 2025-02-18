@@ -40,7 +40,7 @@ Some optional fields that are recommended to set according to your use
 
 1. Go to the Airbyte UI and in the left navigation bar, click **Sources**. In the top-right corner, click **+new source**.
 2. On the Set up the source page, enter the name for the Kafka connector and select **Kafka** from the Source type dropdown.
-3. Follow the [Setup the Kafka source in Airbyte](kafka.md#Setup-the-Kafka-Source-in-Airbyte)
+3. Follow the [Setup the Kafka source in Airbyte](kafka.md#step-2-setup-the-kafka-source-in-airbyte)
 
 ## Supported sync modes
 
